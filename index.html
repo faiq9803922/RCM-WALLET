@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>RCM WALLET</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
@@ -21,6 +21,7 @@
             --text-muted: #dcdcdc;
             --gradient-gold: linear-gradient(135deg, #e6c27a 0%, #D4AF37 50%, #997a15 100%);
             --shadow-gold: 0 4px 15px rgba(212, 175, 55, 0.3);
+            --shadow-gold-glow: 0 0 20px rgba(212, 175, 55, 0.5);
         }
 
         * {
@@ -31,12 +32,14 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        body {
+        html, body {
             background-color: var(--maroon-dark);
             background-image: radial-gradient(circle at center, var(--maroon-main) 0%, var(--maroon-dark) 100%);
             color: var(--text-light);
             min-height: 100vh;
             overflow-x: hidden;
+            overscroll-behavior-y: none;
+            -webkit-overflow-scrolling: touch;
         }
 
         h1, h2, h3, h4, .brand-font {
@@ -46,23 +49,114 @@
 
         a { text-decoration: none; }
 
-        /* Standard Elements */
+        /* Keyframe Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 8px rgba(212, 175, 55, 0.3); }
+            50% { box-shadow: 0 0 22px rgba(212, 175, 55, 0.8); }
+            100% { box-shadow: 0 0 8px rgba(212, 175, 55, 0.3); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulseBadge {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes navPop {
+            0% { transform: scale(0.9); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        .fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .slide-up { animation: slideUp 0.35s ease-out forwards; }
+
+        /* LOADING SCREEN */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at center, var(--maroon-main) 0%, var(--maroon-dark) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loader-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .loader-ring {
+            width: 120px;
+            height: 120px;
+            border: 3px solid rgba(212, 175, 55, 0.15);
+            border-top: 3px solid var(--gold-main);
+            border-bottom: 3px solid var(--gold-main);
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite;
+        }
+
+        .loader-img {
+            position: absolute;
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold-main);
+            animation: pulseGlow 2s infinite;
+        }
+
+        .loader-text {
+            color: var(--gold-main);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Standard Controls */
         input, select, textarea {
             width: 100%;
-            padding: 12px 15px;
+            padding: 13px 15px;
             margin-bottom: 12px;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.45);
             border: 1px solid var(--gold-dark);
             color: var(--gold-light);
-            border-radius: 8px;
+            border-radius: 10px;
             outline: none;
             font-size: 14px;
-            transition: all 0.3s ease;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            -webkit-appearance: none;
         }
         
         input:focus, select:focus, textarea:focus {
             border-color: var(--gold-main);
-            box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
         }
 
         button {
@@ -70,18 +164,24 @@
             padding: 14px;
             background: var(--gradient-gold);
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             color: var(--maroon-dark);
             font-weight: 800;
-            font-size: 16px;
+            font-size: 15px;
             cursor: pointer;
             box-shadow: var(--shadow-gold);
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease, background 0.3s ease;
             text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 46px;
         }
 
         button:active {
-            transform: scale(0.97);
+            transform: scale(0.96);
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
         }
 
         button.outline {
@@ -90,22 +190,23 @@
             color: var(--gold-main);
             box-shadow: none;
         }
+
+        button.outline:active {
+            background: rgba(212, 175, 55, 0.15);
+        }
         
         button.danger {
-            background: #ff4d4d;
+            background: linear-gradient(135deg, #d32f2f, #8b0000);
             color: white;
             border: none;
-            box-shadow: none;
+            box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+        }
+
+        button.danger:active {
+            background: #b71c1c;
         }
 
         .hidden { display: none !important; }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in { animation: fadeIn 0.4s ease forwards; }
 
         /* Auth Screen */
         #auth-screen {
@@ -115,33 +216,32 @@
             justify-content: center;
             min-height: 100vh;
             padding: 20px;
+            padding-bottom: calc(20px + env(safe-area-inset-bottom));
         }
 
         .auth-card {
-            background: rgba(92, 10, 10, 0.4);
-            backdrop-filter: blur(10px);
+            background: rgba(59, 0, 0, 0.55);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--gold-dark);
-            border-radius: 16px;
-            padding: 30px 25px;
+            border-radius: 20px;
+            padding: 30px 22px;
             width: 100%;
             max-width: 400px;
-            max-height: 95vh;
-            overflow-y: auto;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            animation: fadeIn 0.5s ease-out;
         }
 
-        .auth-card::-webkit-scrollbar { display: none; }
-        .auth-card { -ms-overflow-style: none; scrollbar-width: none; }
-
         .logo-img {
-            width: 100px;
-            height: 100px;
+            width: 95px;
+            height: 95px;
             border-radius: 50%;
             border: 3px solid var(--gold-main);
             object-fit: cover;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             box-shadow: var(--shadow-gold);
+            animation: pulseGlow 3s infinite;
         }
 
         .auth-title {
@@ -152,45 +252,49 @@
         }
 
         .auth-toggle {
-            margin-top: 15px;
+            margin-top: 16px;
             font-size: 13px;
             color: var(--text-muted);
             cursor: pointer;
+            padding: 5px;
         }
+
         .auth-toggle span {
             color: var(--gold-main);
-            font-weight: 600;
+            font-weight: 700;
+            text-decoration: underline;
         }
 
         /* Main App Layout */
         #main-app {
             display: none;
-            padding-bottom: 80px;
+            padding-bottom: calc(85px + env(safe-area-inset-bottom));
         }
 
         /* Header */
         header {
             background: var(--gradient-gold);
-            padding: 15px 20px;
+            padding: 12px 20px;
+            padding-top: calc(12px + env(safe-area-inset-top));
             position: sticky;
             top: 0;
             z-index: 100;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
         }
 
         header .header-logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             color: var(--maroon-dark);
         }
 
         header img {
-            width: 35px;
-            height: 35px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             border: 2px solid var(--maroon-dark);
             object-fit: cover;
@@ -199,151 +303,174 @@
         /* Content Sections */
         .section {
             display: none;
-            padding: 20px;
-            animation: fadeIn 0.3s ease;
+            padding: 18px 16px;
+            max-width: 600px;
+            margin: 0 auto;
         }
+
         .section.active {
             display: block;
+            animation: fadeIn 0.35s ease-out;
         }
 
         .section-title {
             color: var(--gold-main);
             font-size: 22px;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             border-bottom: 1px solid var(--gold-dark);
-            padding-bottom: 5px;
+            padding-bottom: 6px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            letter-spacing: 1px;
         }
 
         /* Cards Generic */
         .card {
-            background: linear-gradient(145deg, var(--maroon-light), var(--maroon-main));
+            background: linear-gradient(145deg, rgba(92, 10, 10, 0.8), rgba(26, 2, 2, 0.9));
             border: 1px solid var(--gold-dark);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.4);
             position: relative;
             overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
         }
 
         .card img.banner {
-            width: calc(100% + 30px);
-            margin: -15px -15px 15px -15px;
-            height: 140px;
+            width: calc(100% + 32px);
+            margin: -16px -16px 14px -16px;
+            height: 150px;
             object-fit: cover;
             border-bottom: 2px solid var(--gold-main);
         }
 
         .card h3 {
             color: var(--gold-light);
-            margin-bottom: 5px;
-            font-size: 18px;
+            margin-bottom: 6px;
+            font-size: 19px;
+            letter-spacing: 0.5px;
         }
 
         .card p {
             font-size: 13px;
             color: var(--text-muted);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            line-height: 1.4;
         }
 
         .card .stats {
             display: flex;
             justify-content: space-between;
-            background: rgba(0,0,0,0.3);
-            padding: 10px;
-            border-radius: 6px;
-            margin: 10px 0;
-            font-size: 12px;
-            border: 1px solid rgba(212, 175, 55, 0.2);
+            background: rgba(0,0,0,0.4);
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+            font-size: 13px;
+            border: 1px solid rgba(212, 175, 55, 0.25);
         }
-        .stats span { color: var(--gold-main); font-weight: 600; }
+
+        .stats span { color: var(--gold-main); font-weight: 700; }
 
         /* Player Toggle Buttons */
         .toggle-group {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
+
         .toggle-group button {
             flex: 1;
-            padding: 10px;
+            padding: 12px;
             font-size: 14px;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.5);
             color: var(--gold-main);
-            border: 1px solid var(--gold-main);
+            border: 1px solid var(--gold-dark);
+            border-radius: 10px;
+            box-shadow: none;
         }
+
         .toggle-group button.active {
             background: var(--gradient-gold);
             color: var(--maroon-dark);
+            font-weight: 800;
+            box-shadow: var(--shadow-gold);
         }
 
         /* Badges */
         .role-badge {
             display: inline-block;
-            background: rgba(212, 175, 55, 0.2);
+            background: rgba(212, 175, 55, 0.15);
             color: var(--gold-main);
-            padding: 4px 10px;
-            border-radius: 12px;
+            padding: 4px 12px;
+            border-radius: 20px;
             font-size: 11px;
             border: 1px solid var(--gold-main);
             margin-bottom: 10px;
-            font-weight: 600;
-        }
-        
-        .live-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #ff0000;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: bold;
-            animation: pulse 1.5s infinite;
-            z-index: 10;
-        }
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.6; }
-            100% { opacity: 1; }
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
-        /* Profile Area */
+        .live-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #e60000;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 800;
+            animation: pulseBadge 1.5s infinite;
+            z-index: 10;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(230, 0, 0, 0.6);
+        }
+
+        /* Profile Section */
         .profile-header {
             text-align: center;
-            padding: 10px 0 20px 0;
+            padding: 15px 0 25px 0;
         }
+
         .profile-header img {
-            width: 100px;
-            height: 100px;
+            width: 105px;
+            height: 105px;
             border-radius: 50%;
             border: 3px solid var(--gold-main);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             object-fit: cover;
+            box-shadow: var(--shadow-gold);
+            animation: pulseGlow 4s infinite;
         }
-        .profile-header h2 { color: var(--gold-main); }
-        .profile-header p { color: var(--text-muted); font-size: 14px; margin-bottom: 5px;}
+
+        .profile-header h2 { color: var(--gold-main); font-size: 24px; letter-spacing: 1px; }
+        .profile-header p { color: var(--text-muted); font-size: 14px; margin-bottom: 6px; }
+
         .profile-header .uid-box {
             display: inline-block;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.5);
             border: 1px solid var(--gold-main);
-            padding: 4px 12px;
+            padding: 5px 16px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 13px;
             color: var(--gold-light);
-            margin-top: 5px;
+            margin-top: 6px;
+            font-weight: 600;
         }
 
         .profile-menu button {
-            margin-bottom: 15px;
+            margin-bottom: 14px;
         }
 
         .admin-btn {
-            background: linear-gradient(135deg, #111, #333);
+            background: linear-gradient(135deg, #1f1f1f, #0a0a0a);
             border: 1px solid var(--gold-main);
             color: var(--gold-main);
         }
@@ -357,11 +484,12 @@
             background: var(--gradient-gold);
             display: flex;
             justify-content: space-around;
-            padding: 10px 0;
+            padding: 8px 0;
+            padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
             z-index: 100;
-            box-shadow: 0 -2px 15px rgba(0,0,0,0.5);
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
+            border-top-left-radius: 18px;
+            border-top-right-radius: 18px;
         }
 
         .nav-item {
@@ -370,22 +498,25 @@
             align-items: center;
             color: var(--maroon-dark);
             text-decoration: none;
-            font-size: 11px;
-            font-weight: 700;
+            font-size: 10px;
+            font-weight: 800;
             cursor: pointer;
-            transition: all 0.2s;
-            padding: 5px 10px;
-            border-radius: 8px;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 6px 12px;
+            border-radius: 12px;
         }
+
         .nav-item i {
             font-size: 20px;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
+
         .nav-item.active {
             background: var(--maroon-dark);
             color: var(--gold-main);
-            transform: translateY(-5px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            animation: navPop 0.3s ease-out;
         }
 
         /* Admin Page Specifics */
@@ -396,35 +527,38 @@
             background-image: radial-gradient(circle at top, var(--maroon-main) 0%, var(--maroon-dark) 100%);
             z-index: 9999;
             overflow-y: auto;
-            padding-bottom: 40px;
+            padding-bottom: calc(40px + env(safe-area-inset-bottom));
             display: none;
+            animation: slideUp 0.3s ease-out;
         }
         
         .admin-header {
             background: var(--gradient-gold);
             padding: 15px 20px;
+            padding-top: calc(15px + env(safe-area-inset-top));
             display: flex;
             align-items: center;
             justify-content: space-between;
             position: sticky;
             top: 0;
             z-index: 10;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
         .admin-header h2 { color: var(--maroon-dark); font-size: 20px;}
         .admin-header button {
-            width: auto; padding: 6px 15px; font-size: 12px;
+            width: auto; min-height: unset; padding: 8px 16px; font-size: 12px;
             background: var(--maroon-dark); color: var(--gold-main); border: 1px solid var(--maroon-dark);
         }
 
-        .admin-content { padding: 20px; }
+        .admin-content { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
 
         .data-item {
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px;
+            background: rgba(0,0,0,0.45); padding: 12px 14px; border-radius: 10px;
             border: 1px solid var(--gold-dark); margin-bottom: 10px;
         }
+
         .data-item-info h4 { color: var(--gold-main); font-size: 15px; margin-bottom: 3px; }
         .data-item-info span { color: var(--text-muted); font-size: 11px; }
 
@@ -435,20 +569,40 @@
             color: var(--text-muted);
             font-style: italic;
         }
+
         .empty-state i {
-            font-size: 40px;
+            font-size: 42px;
             color: var(--gold-dark);
-            margin-bottom: 10px;
-            opacity: 0.5;
+            margin-bottom: 12px;
+            opacity: 0.6;
+            display: block;
+        }
+
+        /* Responsive Tweaks */
+        @media (max-width: 380px) {
+            .auth-card { padding: 22px 16px; }
+            .section { padding: 14px 12px; }
+            .card { padding: 14px; }
+            .nav-item { padding: 4px 8px; font-size: 9px; }
+            .nav-item i { font-size: 18px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- LOADING SCREEN -->
+    <div id="loading-screen">
+        <div class="loader-wrapper">
+            <div class="loader-ring"></div>
+            <img src="rcm.jfif" alt="Loading..." class="loader-img" onerror="this.src='https://via.placeholder.com/85/D4AF37/1a0202?text=RCM'">
+        </div>
+        <div class="loader-text">RCM WALLET</div>
+    </div>
+
     <!-- AUTHENTICATION SCREEN -->
     <div id="auth-screen">
-        <div class="auth-card fade-in">
-            <img src="rcm.jfif" alt="RCM WALLET" class="logo-img" onerror="this.src='https://via.placeholder.com/100/D4AF37/1a0202?text=RCM'">
+        <div class="auth-card">
+            <img src="rcm.jfif" alt="RCM WALLET" class="logo-img" onerror="this.src='https://via.placeholder.com/95/D4AF37/1a0202?text=RCM'">
             <h1 class="brand-font auth-title">RCM WALLET</h1>
             
             <form id="auth-form">
@@ -459,7 +613,7 @@
                 <input type="password" id="auth-password" placeholder="Password" required>
                 <input type="password" id="auth-confirm" placeholder="Confirm Password" class="hidden">
                 
-                <button type="submit" id="auth-btn">SIGN IN</button>
+                <button type="submit" id="auth-btn"><i class="fa-solid fa-right-to-bracket"></i> SIGN IN</button>
             </form>
             
             <div class="auth-toggle" id="toggle-auth">
@@ -473,7 +627,7 @@
         <!-- Header -->
         <header>
             <div class="header-logo">
-                <img src="rcm.jfif" alt="Logo" onerror="this.src='https://via.placeholder.com/35/D4AF37/1a0202?text=R'">
+                <img src="rcm.jfif" alt="Logo" onerror="this.src='https://via.placeholder.com/38/D4AF37/1a0202?text=R'">
                 <h2 class="brand-font">RCM WALLET</h2>
             </div>
         </header>
@@ -488,8 +642,8 @@
         <div id="players-page" class="section">
             <div class="section-title">Player Hub</div>
             <div class="toggle-group">
-                <button class="active" id="btn-find-team" onclick="togglePlayerView('find')">FIND TEAM</button>
-                <button id="btn-get-team" onclick="togglePlayerView('get')">GET TEAM</button>
+                <button class="active" id="btn-find-team" onclick="togglePlayerView('find')"><i class="fa-solid fa-magnifying-glass"></i> FIND TEAM</button>
+                <button id="btn-get-team" onclick="togglePlayerView('get')"><i class="fa-solid fa-user-plus"></i> RECRUIT</button>
             </div>
             
             <div id="view-find-team">
@@ -520,7 +674,7 @@
                         <input type="number" id="rec-contact" placeholder="WhatsApp Number (e.g. 03001234567)" required>
                         <textarea id="rec-req" placeholder="Requirements (e.g., K/D, Level, Experience)" rows="2" required></textarea>
                         <textarea id="rec-msg" placeholder="Additional Message" rows="2"></textarea>
-                        <button type="submit">ADD MSG</button>
+                        <button type="submit"><i class="fa-solid fa-paper-plane"></i> POST RECRUITMENT</button>
                     </form>
                 </div>
             </div>
@@ -535,7 +689,7 @@
         <!-- 4. PROFILE SECTION -->
         <div id="profile-page" class="section">
             <div class="profile-header">
-                <img src="rcm.jfif" alt="Avatar" onerror="this.src='https://via.placeholder.com/100/D4AF37/1a0202?text=U'">
+                <img src="rcm.jfif" alt="Avatar" onerror="this.src='https://via.placeholder.com/105/D4AF37/1a0202?text=U'">
                 <h2 id="profile-name" class="brand-font">PLAYER NAME</h2>
                 <p>Login ID: <span id="profile-login-id" style="color:var(--text-light)">Loading...</span></p>
                 <div class="uid-box">UID: <span id="profile-uid">Loading...</span></div>
@@ -547,7 +701,7 @@
                 <button class="admin-btn" id="btn-admin-login">
                     <i class="fa-solid fa-lock"></i> ADMINISTRATOR PANEL
                 </button>
-                <button id="btn-logout" style="background: rgba(200,0,0,0.2); color: #ff4d4d; border: 1px solid #ff4d4d; box-shadow:none;">
+                <button id="btn-logout" style="background: rgba(200,0,0,0.25); color: #ff5555; border: 1px solid #ff5555; box-shadow:none;">
                     <i class="fa-solid fa-right-from-bracket"></i> LOG OUT
                 </button>
             </div>
@@ -595,7 +749,7 @@
                     <input type="text" id="tour-slots" placeholder="Total Slots (e.g. 48/48)" required>
                     <input type="number" id="tour-contact" placeholder="Registration WhatsApp Number" required>
                     <textarea id="tour-desc" placeholder="Details/Schedule" rows="3" required></textarea>
-                    <button type="submit">UPLOAD TOURNAMENT</button>
+                    <button type="submit"><i class="fa-solid fa-cloud-arrow-up"></i> UPLOAD TOURNAMENT</button>
                 </form>
             </div>
 
@@ -612,7 +766,7 @@
                     <input type="url" id="upd-img" placeholder="Image/Thumbnail URL">
                     <input type="url" id="upd-link" placeholder="YouTube Video Link" class="hidden">
                     <textarea id="upd-desc" placeholder="Description" rows="3"></textarea>
-                    <button type="submit">POST UPDATE</button>
+                    <button type="submit"><i class="fa-solid fa-bullhorn"></i> POST UPDATE</button>
                 </form>
             </div>
 
@@ -622,7 +776,7 @@
                 </h3>
                 <form id="form-admin-support">
                     <input type="number" id="admin-support-num" placeholder="Enter WhatsApp Number (e.g. 923001234567)" required>
-                    <button type="submit" class="outline">UPDATE NUMBER</button>
+                    <button type="submit" class="outline"><i class="fa-solid fa-pen-to-square"></i> UPDATE NUMBER</button>
                 </form>
             </div>
 
@@ -645,7 +799,6 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        // Added deleteDoc below
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -664,8 +817,10 @@
 
         let isLoginMode = true;
         let currentUser = null;
+        let isAdmin = false;
         let currentSupportNumber = "923000000000";
 
+        const loadingScreen = document.getElementById('loading-screen');
         const authScreen = document.getElementById('auth-screen');
         const mainApp = document.getElementById('main-app');
         const authForm = document.getElementById('auth-form');
@@ -679,6 +834,15 @@
         const toggleAuthBtn = document.getElementById('toggle-auth');
         const authTitle = document.querySelector('.auth-title');
         const authSubmitBtn = document.getElementById('auth-btn');
+
+        function hideLoadingScreen() {
+            if (loadingScreen) {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }
+        }
 
         function getWaLink(phone) {
             if(!phone) return '#';
@@ -695,7 +859,7 @@
                 authName.classList.add('hidden'); authName.removeAttribute('required');
                 authUid.classList.add('hidden'); authUid.removeAttribute('required');
                 authConfirm.classList.add('hidden'); authConfirm.removeAttribute('required');
-                authSubmitBtn.innerText = "SIGN IN";
+                authSubmitBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> SIGN IN`;
                 toggleAuthBtn.innerHTML = "Don't have an account? <span>Register</span>";
             } else {
                 authTitle.innerText = "JOIN RCM";
@@ -703,7 +867,7 @@
                 authName.classList.remove('hidden'); authName.setAttribute('required', 'true');
                 authUid.classList.remove('hidden'); authUid.setAttribute('required', 'true');
                 authConfirm.classList.remove('hidden'); authConfirm.setAttribute('required', 'true');
-                authSubmitBtn.innerText = "REGISTER";
+                authSubmitBtn.innerHTML = `<i class="fa-solid fa-user-plus"></i> REGISTER`;
                 toggleAuthBtn.innerHTML = "Already have an account? <span>Sign In</span>";
             }
         });
@@ -730,11 +894,14 @@
                 }
             } catch (error) {
                 alert("Error: " + error.message);
-                authSubmitBtn.innerText = isLoginMode ? "SIGN IN" : "REGISTER";
+                authSubmitBtn.innerHTML = isLoginMode ? `<i class="fa-solid fa-right-to-bracket"></i> SIGN IN` : `<i class="fa-solid fa-user-plus"></i> REGISTER`;
             }
         });
 
-        document.getElementById('btn-logout').addEventListener('click', () => signOut(auth));
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            isAdmin = false;
+            signOut(auth);
+        });
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -742,23 +909,28 @@
                 authScreen.style.display = 'none';
                 mainApp.style.display = 'block';
                 
-                const userDoc = await getDoc(doc(db, "users", user.uid));
-                if(userDoc.exists()) {
-                    const data = userDoc.data();
-                    document.getElementById('profile-name').innerText = data.fullName || "PLAYER";
-                    document.getElementById('profile-login-id').innerText = data.loginId || "N/A";
-                    document.getElementById('profile-uid').innerText = data.gameUid || "N/A";
-                } else {
-                    document.getElementById('profile-name').innerText = user.email.split('@')[0];
-                    document.getElementById('profile-uid').innerText = user.uid.substring(0,8).toUpperCase();
+                try {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if(userDoc.exists()) {
+                        const data = userDoc.data();
+                        document.getElementById('profile-name').innerText = data.fullName || "PLAYER";
+                        document.getElementById('profile-login-id').innerText = data.loginId || "N/A";
+                        document.getElementById('profile-uid').innerText = data.gameUid || "N/A";
+                    } else {
+                        document.getElementById('profile-name').innerText = user.email.split('@')[0];
+                        document.getElementById('profile-uid').innerText = user.uid.substring(0,8).toUpperCase();
+                    }
+                } catch(e) {
+                    console.log("Profile fetch error:", e);
                 }
                 startDataListeners();
             } else {
                 authScreen.style.display = 'flex';
                 mainApp.style.display = 'none';
                 authForm.reset();
-                authSubmitBtn.innerText = "SIGN IN";
+                authSubmitBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> SIGN IN`;
             }
+            hideLoadingScreen();
         });
 
         window.switchTab = function(tabId, navItem) {
@@ -793,7 +965,9 @@
         document.getElementById('btn-admin-login').addEventListener('click', () => {
             const pass = prompt("Enter Administrator Password:");
             if(pass === "RCM9988") {
+                isAdmin = true;
                 document.getElementById('admin-page').style.display = 'block';
+                if(window.loadRecruitments) window.loadRecruitments(); // refresh recruitment list to show admin delete buttons
             } else if (pass !== null) {
                 alert("Incorrect Password! Access Denied.");
             }
@@ -818,13 +992,14 @@
             }
         }
 
-        // Global Delete Function for Admin
+        // Global Delete Function for Documents
         window.deleteDocument = async function(collectionName, id) {
             if(confirm("Are you sure you want to delete this item?")) {
                 try {
                     await deleteDoc(doc(db, collectionName, id));
+                    alert("Item deleted successfully!");
                 } catch(e) {
-                    alert("Error: " + e.message);
+                    alert("Error deleting: " + e.message);
                 }
             }
         }
@@ -872,7 +1047,7 @@
                                 <div>Slots: <span>${data.slots}</span></div>
                             </div>
                             <a href="${registerLink}" target="_blank" style="text-decoration: none;">
-                                <button><i class="fa-brands fa-whatsapp"></i> REGISTER</button>
+                                <button><i class="fa-brands fa-whatsapp"></i> REGISTER NOW</button>
                             </a>
                         </div>
                     `;
@@ -884,7 +1059,7 @@
                                 <h4>${data.name}</h4>
                                 <span>Fee: ${data.fee} | Slots: ${data.slots}</span>
                             </div>
-                            <button class="danger" onclick="deleteDocument('tournaments', '${doc.id}')" style="width: auto; padding: 10px 15px;">
+                            <button class="danger" onclick="deleteDocument('tournaments', '${doc.id}')" style="width: auto; min-height: unset; padding: 8px 14px; font-size: 12px;">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
@@ -900,21 +1075,33 @@
                     const list = document.getElementById('recruitment-list');
                     list.innerHTML = "";
                     let count = 0;
-                    snapshot.forEach(doc => {
-                        const data = doc.data();
+                    snapshot.forEach(docSnap => {
+                        const data = docSnap.data();
                         if(filter !== "ALL" && data.role !== filter) return;
                         count++;
+                        
+                        // Check if current user is author or admin
+                        const canDelete = currentUser && (data.authorId === currentUser.uid || isAdmin);
+
                         list.innerHTML += `
                             <div class="card fade-in">
                                 <div class="role-badge">${data.role}</div>
                                 <h3>${data.teamName}</h3>
                                 <p><strong>Requirements:</strong> ${data.reqs}</p>
                                 ${data.msg ? `<p><strong>Note:</strong> ${data.msg}</p>` : ''}
-                                <a href="${getWaLink(data.contact)}" target="_blank" style="text-decoration: none;">
-                                    <button class="outline" style="margin-top:10px;">
-                                        <i class="fa-brands fa-whatsapp"></i> CONTACT NOW
-                                    </button>
-                                </a>
+                                
+                                <div style="display: flex; gap: 8px; margin-top: 10px;">
+                                    <a href="${getWaLink(data.contact)}" target="_blank" style="text-decoration: none; flex: 1;">
+                                        <button class="outline" style="width: 100%;">
+                                            <i class="fa-brands fa-whatsapp"></i> CONTACT NOW
+                                        </button>
+                                    </a>
+                                    ${canDelete ? `
+                                        <button class="danger" style="width: auto; padding: 0 14px;" title="Delete Post" onclick="deleteDocument('recruitments', '${docSnap.id}')">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    ` : ''}
+                                </div>
                             </div>
                         `;
                     });
@@ -936,20 +1123,20 @@
                     return;
                 }
                 
-                snapshot.forEach(doc => {
-                    const data = doc.data();
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
                     
                     // Main App View
                     if(data.type === 'youtube') {
                         list.innerHTML += `
                             <div class="card fade-in">
-                                <div class="live-badge">LIVE</div>
+                                <div class="live-badge"><i class="fa-solid fa-circle"></i> LIVE</div>
                                 ${data.imgUrl ? `<img src="${data.imgUrl}" class="banner" alt="Thumbnail">` : ''}
                                 <h3>${data.title}</h3>
                                 <p>${data.desc}</p>
                                 <a href="${data.link}" target="_blank" style="text-decoration: none;">
                                     <button style="background: linear-gradient(135deg, #ff0000, #990000); color:white; border:none;">
-                                        <i class="fa-brands fa-youtube"></i> WATCH LIVE
+                                        <i class="fa-brands fa-youtube"></i> WATCH LIVE STREAM
                                     </button>
                                 </a>
                             </div>
@@ -971,7 +1158,7 @@
                                 <h4>${data.title}</h4>
                                 <span>Type: ${data.type.toUpperCase()}</span>
                             </div>
-                            <button class="danger" onclick="deleteDocument('updates', '${doc.id}')" style="width: auto; padding: 10px 15px;">
+                            <button class="danger" onclick="deleteDocument('updates', '${docSnap.id}')" style="width: auto; min-height: unset; padding: 8px 14px; font-size: 12px;">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
@@ -998,10 +1185,10 @@
                     contact: document.getElementById('rec-contact').value,
                     reqs: document.getElementById('rec-req').value,
                     msg: document.getElementById('rec-msg').value,
-                    authorId: currentUser.uid,
+                    authorId: currentUser ? currentUser.uid : '',
                     createdAt: serverTimestamp()
                 });
-                alert("Request posted successfully!");
+                alert("Recruitment request posted successfully!");
                 document.getElementById('form-recruitment').reset();
                 togglePlayerView('find');
             } catch(e) { alert("Error: " + e.message); }
