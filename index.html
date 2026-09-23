@@ -44,11 +44,13 @@
             text-transform: uppercase;
         }
 
+        a { text-decoration: none; }
+
         /* Standard Elements */
         input, select, textarea {
             width: 100%;
             padding: 12px 15px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--gold-dark);
             color: var(--gold-light);
@@ -113,27 +115,33 @@
             backdrop-filter: blur(10px);
             border: 1px solid var(--gold-dark);
             border-radius: 16px;
-            padding: 40px 25px;
+            padding: 30px 25px;
             width: 100%;
             max-width: 400px;
+            max-height: 95vh;
+            overflow-y: auto;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
+        /* Hide scrollbar for auth card */
+        .auth-card::-webkit-scrollbar { display: none; }
+        .auth-card { -ms-overflow-style: none; scrollbar-width: none; }
+
         .logo-img {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             border: 3px solid var(--gold-main);
             object-fit: cover;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             box-shadow: var(--shadow-gold);
         }
 
         .auth-title {
             color: var(--gold-main);
-            margin-bottom: 25px;
-            font-size: 28px;
+            margin-bottom: 20px;
+            font-size: 26px;
             letter-spacing: 2px;
         }
 
@@ -151,7 +159,7 @@
         /* Main App Layout */
         #main-app {
             display: none;
-            padding-bottom: 80px; /* Space for bottom nav */
+            padding-bottom: 80px;
         }
 
         /* Header */
@@ -179,15 +187,7 @@
             height: 35px;
             border-radius: 50%;
             border: 2px solid var(--maroon-dark);
-        }
-
-        .admin-badge {
-            background: var(--maroon-dark);
-            color: var(--gold-main);
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: bold;
+            object-fit: cover;
         }
 
         /* Content Sections */
@@ -298,6 +298,7 @@
             font-size: 10px;
             font-weight: bold;
             animation: pulse 1.5s infinite;
+            z-index: 10;
         }
         @keyframes pulse {
             0% { opacity: 1; }
@@ -308,7 +309,7 @@
         /* Profile Area */
         .profile-header {
             text-align: center;
-            padding: 20px 0;
+            padding: 10px 0 20px 0;
         }
         .profile-header img {
             width: 100px;
@@ -316,12 +317,29 @@
             border-radius: 50%;
             border: 3px solid var(--gold-main);
             margin-bottom: 10px;
+            object-fit: cover;
         }
         .profile-header h2 { color: var(--gold-main); }
-        .profile-header p { color: var(--text-muted); font-size: 14px; }
+        .profile-header p { color: var(--text-muted); font-size: 14px; margin-bottom: 5px;}
+        .profile-header .uid-box {
+            display: inline-block;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--gold-main);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--gold-light);
+            margin-top: 5px;
+        }
 
         .profile-menu button {
             margin-bottom: 15px;
+        }
+
+        .admin-btn {
+            background: linear-gradient(135deg, #111, #333);
+            border: 1px solid var(--gold-main);
+            color: var(--gold-main);
         }
 
         /* Bottom Navigation */
@@ -364,11 +382,11 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        /* Modals (Admin & Forms) */
+        /* Modals Generic */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             backdrop-filter: blur(5px);
             z-index: 200;
             display: flex;
@@ -404,6 +422,21 @@
             padding: 0;
         }
 
+        /* Admin Panel Specifics */
+        .admin-action-card {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--gold-dark);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .admin-action-card h4 {
+            color: var(--gold-light);
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
         /* Empty States */
         .empty-state {
             text-align: center;
@@ -424,13 +457,21 @@
     <!-- AUTHENTICATION SCREEN -->
     <div id="auth-screen">
         <div class="auth-card fade-in">
-            <img src="rcm.jfif" alt="RCM WALLET Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/120/D4AF37/1a0202?text=RCM'">
+            <img src="rcm.jfif" alt="RCM WALLET" class="logo-img" onerror="this.src='https://via.placeholder.com/100/D4AF37/1a0202?text=RCM'">
             <h1 class="brand-font auth-title">RCM WALLET</h1>
             
             <form id="auth-form">
-                <input type="text" id="auth-name" placeholder="In-Game Name / Username" class="hidden">
+                <!-- Registration Specific Fields -->
+                <input type="text" id="auth-id" placeholder="Login ID / Username" class="hidden">
+                <input type="text" id="auth-name" placeholder="Full Name" class="hidden">
+                <input type="text" id="auth-uid" placeholder="In-Game UID" class="hidden">
+                
+                <!-- Standard Fields -->
                 <input type="email" id="auth-email" placeholder="Email Address" required>
                 <input type="password" id="auth-password" placeholder="Password" required>
+                
+                <!-- Confirm Password -->
+                <input type="password" id="auth-confirm" placeholder="Confirm Password" class="hidden">
                 
                 <button type="submit" id="auth-btn">SIGN IN</button>
             </form>
@@ -449,15 +490,11 @@
                 <img src="rcm.jfif" alt="Logo" onerror="this.src='https://via.placeholder.com/35/D4AF37/1a0202?text=R'">
                 <h2 class="brand-font">RCM WALLET</h2>
             </div>
-            <div id="admin-indicator" class="admin-badge hidden">ADMIN</div>
         </header>
 
         <!-- 1. TOURS SECTION -->
         <div id="tours-page" class="section active">
-            <div class="section-title">
-                <span>Premium Tournaments</span>
-                <i class="fa-solid fa-plus-circle hidden admin-only" onclick="openModal('modal-tour')" style="cursor:pointer;"></i>
-            </div>
+            <div class="section-title">Premium Tournaments</div>
             <div id="tours-list">
                 <!-- Tournaments injected via JS -->
             </div>
@@ -498,7 +535,7 @@
                             <option value="RUSHER">RUSHER</option>
                         </select>
                         <input type="text" id="rec-team" placeholder="Team Name / Your Name" required>
-                        <input type="number" id="rec-contact" placeholder="WhatsApp Contact Number" required>
+                        <input type="number" id="rec-contact" placeholder="WhatsApp Number (e.g. 03001234567)" required>
                         <textarea id="rec-req" placeholder="Requirements (e.g., K/D, Level, Experience)" rows="2" required></textarea>
                         <textarea id="rec-msg" placeholder="Additional Message" rows="2"></textarea>
                         <button type="submit">ADD MSG</button>
@@ -509,10 +546,7 @@
 
         <!-- 3. UPDATES SECTION -->
         <div id="updates-page" class="section">
-            <div class="section-title">
-                <span>Daily Updates & Live</span>
-                <i class="fa-solid fa-plus-circle hidden admin-only" onclick="openModal('modal-update')" style="cursor:pointer;"></i>
-            </div>
+            <div class="section-title">Daily Updates & Live</div>
             <div id="updates-list">
                 <!-- Updates injected via JS -->
             </div>
@@ -523,11 +557,15 @@
             <div class="profile-header">
                 <img src="rcm.jfif" alt="Avatar" onerror="this.src='https://via.placeholder.com/100/D4AF37/1a0202?text=U'">
                 <h2 id="profile-name" class="brand-font">PLAYER NAME</h2>
-                <p>UID: <span id="profile-uid">Loading...</span></p>
+                <p>Login ID: <span id="profile-login-id" style="color:var(--text-light)">Loading...</span></p>
+                <div class="uid-box">UID: <span id="profile-uid">Loading...</span></div>
             </div>
             <div class="profile-menu">
-                <button class="outline" onclick="alert('Customer Support: WhatsApp +92 300 0000000\nEmail: support@rcmwallet.com')">
-                    <i class="fa-solid fa-headset"></i> CUSTOMER SUPPORT
+                <button class="outline" id="btn-support">
+                    <i class="fa-brands fa-whatsapp"></i> CUSTOMER SUPPORT
+                </button>
+                <button class="admin-btn" id="btn-admin-login">
+                    <i class="fa-solid fa-lock"></i> ADMINISTRATOR PANEL
                 </button>
                 <button id="btn-logout" style="background: rgba(200,0,0,0.2); color: #ff4d4d; border: 1px solid #ff4d4d; box-shadow:none;">
                     <i class="fa-solid fa-right-from-bracket"></i> LOG OUT
@@ -556,9 +594,36 @@
         </nav>
     </div>
 
-    <!-- ADMIN MODALS -->
-    <!-- Add Tournament Modal -->
-    <div id="modal-tour" class="modal-overlay hidden">
+    <!-- MAIN ADMIN PANEL MODAL -->
+    <div id="modal-admin-panel" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="brand-font"><i class="fa-solid fa-user-tie"></i> Admin Panel</h3>
+                <button class="modal-close" onclick="closeModal('modal-admin-panel')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="admin-action-card">
+                <h4>Upload Tournaments</h4>
+                <button onclick="openModal('modal-tour')">ADD TOURNAMENT</button>
+            </div>
+            
+            <div class="admin-action-card">
+                <h4>Upload Updates & Live</h4>
+                <button onclick="openModal('modal-update')">ADD UPDATE</button>
+            </div>
+
+            <div class="admin-action-card">
+                <h4>Manage Customer Support</h4>
+                <form id="form-admin-support">
+                    <input type="number" id="admin-support-num" placeholder="Enter WhatsApp Number (e.g. 923001234567)" required>
+                    <button type="submit" class="outline">UPDATE NUMBER</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUB-MODAL: Add Tournament -->
+    <div id="modal-tour" class="modal-overlay hidden" style="z-index: 250;">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="brand-font">Add Tournament</h3>
@@ -569,15 +634,15 @@
                 <input type="text" id="tour-name" placeholder="Tournament Name" required>
                 <input type="text" id="tour-fee" placeholder="Entry Fee (e.g. Free, 100 PKR)" required>
                 <input type="text" id="tour-slots" placeholder="Total Slots (e.g. 48/48)" required>
-                <input type="number" id="tour-contact" placeholder="Contact Number (for Register btn)" required>
+                <input type="number" id="tour-contact" placeholder="Registration WhatsApp Number" required>
                 <textarea id="tour-desc" placeholder="Details/Schedule" rows="3" required></textarea>
                 <button type="submit">UPLOAD TOURNAMENT</button>
             </form>
         </div>
     </div>
 
-    <!-- Add Update / YT Live Modal -->
-    <div id="modal-update" class="modal-overlay hidden">
+    <!-- SUB-MODAL: Add Update / YT Live -->
+    <div id="modal-update" class="modal-overlay hidden" style="z-index: 250;">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="brand-font">Add Update</h3>
@@ -601,8 +666,8 @@
     <script type="module">
         // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         // User Firebase Configuration
         const firebaseConfig = {
@@ -623,33 +688,55 @@
         // State variables
         let isLoginMode = true;
         let currentUser = null;
-        let isAdmin = false;
-
-        // Admin Email List (Add your admin email here)
-        const ADMIN_EMAILS = ["admin@rcmwallet.com", "admin@gmail.com"];
+        let currentSupportNumber = "923000000000"; // Default, will sync with DB
 
         // DOM Elements
         const authScreen = document.getElementById('auth-screen');
         const mainApp = document.getElementById('main-app');
         const authForm = document.getElementById('auth-form');
+        
+        // Form Inputs
+        const authId = document.getElementById('auth-id');
         const authName = document.getElementById('auth-name');
+        const authUid = document.getElementById('auth-uid');
+        const authEmail = document.getElementById('auth-email');
+        const authPass = document.getElementById('auth-password');
+        const authConfirm = document.getElementById('auth-confirm');
+        
         const toggleAuthBtn = document.getElementById('toggle-auth');
         const authTitle = document.querySelector('.auth-title');
         const authSubmitBtn = document.getElementById('auth-btn');
+
+        // Helper: Format Contact Number for WhatsApp
+        function getWaLink(phone) {
+            if(!phone) return '#';
+            let cleaned = phone.toString().replace(/\D/g, '');
+            // If it starts with 0 (e.g. 0300...), assume Pakistan +92
+            if(cleaned.startsWith('0')) {
+                cleaned = '92' + cleaned.substring(1);
+            }
+            return `https://wa.me/${cleaned}`;
+        }
 
         // Auth Toggle Logic
         toggleAuthBtn.addEventListener('click', () => {
             isLoginMode = !isLoginMode;
             if(isLoginMode) {
                 authTitle.innerText = "RCM WALLET";
-                authName.classList.add('hidden');
-                authName.removeAttribute('required');
+                authId.classList.add('hidden'); authId.removeAttribute('required');
+                authName.classList.add('hidden'); authName.removeAttribute('required');
+                authUid.classList.add('hidden'); authUid.removeAttribute('required');
+                authConfirm.classList.add('hidden'); authConfirm.removeAttribute('required');
+                
                 authSubmitBtn.innerText = "SIGN IN";
                 toggleAuthBtn.innerHTML = "Don't have an account? <span>Register</span>";
             } else {
                 authTitle.innerText = "JOIN RCM";
-                authName.classList.remove('hidden');
-                authName.setAttribute('required', 'true');
+                authId.classList.remove('hidden'); authId.setAttribute('required', 'true');
+                authName.classList.remove('hidden'); authName.setAttribute('required', 'true');
+                authUid.classList.remove('hidden'); authUid.setAttribute('required', 'true');
+                authConfirm.classList.remove('hidden'); authConfirm.setAttribute('required', 'true');
+                
                 authSubmitBtn.innerText = "REGISTER";
                 toggleAuthBtn.innerHTML = "Already have an account? <span>Sign In</span>";
             }
@@ -658,17 +745,33 @@
         // Auth Submit Logic
         authForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('auth-email').value.trim();
-            const password = document.getElementById('auth-password').value;
-            const name = authName.value.trim();
+            const email = authEmail.value.trim();
+            const password = authPass.value;
             
             try {
                 authSubmitBtn.innerText = "PLEASE WAIT...";
                 if(isLoginMode) {
                     await signInWithEmailAndPassword(auth, email, password);
                 } else {
+                    const confirmPass = authConfirm.value;
+                    if(password !== confirmPass) {
+                        throw new Error("Passwords do not match!");
+                    }
+                    
+                    const loginId = authId.value.trim();
+                    const fullName = authName.value.trim();
+                    const gameUid = authUid.value.trim();
+
                     const userCred = await createUserWithEmailAndPassword(auth, email, password);
-                    await updateProfile(userCred.user, { displayName: name });
+                    
+                    // Save extra info to Firestore 'users' collection
+                    await setDoc(doc(db, "users", userCred.user.uid), {
+                        loginId: loginId,
+                        fullName: fullName,
+                        gameUid: gameUid,
+                        email: email,
+                        createdAt: serverTimestamp()
+                    });
                 }
             } catch (error) {
                 alert("Error: " + error.message);
@@ -682,28 +785,24 @@
         });
 
         // Auth State Observer
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
-                isAdmin = ADMIN_EMAILS.includes(user.email.toLowerCase());
-                
-                // Update UI
                 authScreen.style.display = 'none';
                 mainApp.style.display = 'block';
-                document.getElementById('profile-name').innerText = user.displayName || "GUEST PLAYER";
-                document.getElementById('profile-uid').innerText = user.uid.substring(0, 10).toUpperCase();
                 
-                // Handle Admin Mode
-                const adminElements = document.querySelectorAll('.admin-only');
-                if(isAdmin) {
-                    document.getElementById('admin-indicator').classList.remove('hidden');
-                    adminElements.forEach(el => el.classList.remove('hidden'));
+                // Fetch Profile Data from Firestore
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if(userDoc.exists()) {
+                    const data = userDoc.data();
+                    document.getElementById('profile-name').innerText = data.fullName || "PLAYER";
+                    document.getElementById('profile-login-id').innerText = data.loginId || "N/A";
+                    document.getElementById('profile-uid').innerText = data.gameUid || "N/A";
                 } else {
-                    document.getElementById('admin-indicator').classList.add('hidden');
-                    adminElements.forEach(el => el.classList.add('hidden'));
+                    document.getElementById('profile-name').innerText = user.email.split('@')[0];
+                    document.getElementById('profile-uid').innerText = user.uid.substring(0,8).toUpperCase();
                 }
 
-                // Start Data Listeners
                 startDataListeners();
             } else {
                 authScreen.style.display = 'flex';
@@ -738,7 +837,7 @@
             }
         };
 
-        // Admin Modals Logic
+        // Modal Logic
         window.openModal = function(id) { document.getElementById(id).classList.remove('hidden'); }
         window.closeModal = function(id) { document.getElementById(id).classList.add('hidden'); }
         
@@ -749,10 +848,34 @@
             else linkField.classList.add('hidden');
         };
 
-        // FIREBASE DATA FUNCTIONS (Real-time sync via onSnapshot)
-        let unsubTours, unsubRecs, unsubUpds;
+        // Administrator Panel Access
+        document.getElementById('btn-admin-login').addEventListener('click', () => {
+            const pass = prompt("Enter Administrator Password:");
+            if(pass === "RCM9988") {
+                openModal('modal-admin-panel');
+            } else if (pass !== null) {
+                alert("Incorrect Password! Access Denied.");
+            }
+        });
+
+        // FIREBASE DATA FUNCTIONS
+        let unsubTours, unsubRecs, unsubUpds, unsubSettings;
 
         function startDataListeners() {
+            // Listen to Global Settings (Customer Support)
+            unsubSettings = onSnapshot(doc(db, "settings", "general"), (docSnap) => {
+                if(docSnap.exists() && docSnap.data().supportNumber) {
+                    currentSupportNumber = docSnap.data().supportNumber;
+                    document.getElementById('admin-support-num').value = currentSupportNumber;
+                }
+            });
+
+            // Customer Support Button Action
+            document.getElementById('btn-support').onclick = () => {
+                const waUrl = getWaLink(currentSupportNumber);
+                window.location.href = waUrl;
+            };
+
             // Listen to Tournaments
             const qTours = query(collection(db, "tournaments"), orderBy("createdAt", "desc"));
             unsubTours = onSnapshot(qTours, (snapshot) => {
@@ -764,6 +887,7 @@
                 }
                 snapshot.forEach(doc => {
                     const data = doc.data();
+                    const registerLink = getWaLink(data.contact);
                     list.innerHTML += `
                         <div class="card fade-in">
                             ${data.imgUrl ? `<img src="${data.imgUrl}" class="banner" alt="Banner">` : ''}
@@ -773,9 +897,9 @@
                                 <div>Fee: <span>${data.fee}</span></div>
                                 <div>Slots: <span>${data.slots}</span></div>
                             </div>
-                            <button onclick="window.open('https://wa.me/${data.contact}', '_blank')">
-                                <i class="fa-brands fa-whatsapp"></i> REGISTER
-                            </button>
+                            <a href="${registerLink}" target="_blank" style="text-decoration: none;">
+                                <button><i class="fa-brands fa-whatsapp"></i> REGISTER</button>
+                            </a>
                         </div>
                     `;
                 });
@@ -794,15 +918,18 @@
                         const data = doc.data();
                         if(filter !== "ALL" && data.role !== filter) return;
                         count++;
+                        const contactLink = getWaLink(data.contact);
                         list.innerHTML += `
                             <div class="card fade-in">
                                 <div class="role-badge">${data.role}</div>
                                 <h3>${data.teamName}</h3>
                                 <p><strong>Requirements:</strong> ${data.reqs}</p>
                                 ${data.msg ? `<p><strong>Note:</strong> ${data.msg}</p>` : ''}
-                                <button class="outline" style="margin-top:10px;" onclick="window.open('https://wa.me/${data.contact}', '_blank')">
-                                    <i class="fa-solid fa-phone"></i> CONTACT NOW
-                                </button>
+                                <a href="${contactLink}" target="_blank" style="text-decoration: none;">
+                                    <button class="outline" style="margin-top:10px;">
+                                        <i class="fa-brands fa-whatsapp"></i> CONTACT NOW
+                                    </button>
+                                </a>
                             </div>
                         `;
                     });
@@ -831,9 +958,11 @@
                                 ${data.imgUrl ? `<img src="${data.imgUrl}" class="banner" alt="Thumbnail">` : ''}
                                 <h3>${data.title}</h3>
                                 <p>${data.desc}</p>
-                                <button style="background: linear-gradient(135deg, #ff0000, #990000); color:white; border:none;" onclick="window.open('${data.link}', '_blank')">
-                                    <i class="fa-brands fa-youtube"></i> WATCH LIVE
-                                </button>
+                                <a href="${data.link}" target="_blank" style="text-decoration: none;">
+                                    <button style="background: linear-gradient(135deg, #ff0000, #990000); color:white; border:none;">
+                                        <i class="fa-brands fa-youtube"></i> WATCH LIVE
+                                    </button>
+                                </a>
                             </div>
                         `;
                     } else {
@@ -842,9 +971,6 @@
                                 ${data.imgUrl ? `<img src="${data.imgUrl}" class="banner" alt="Image">` : ''}
                                 <h3>${data.title}</h3>
                                 <p>${data.desc}</p>
-                                <div class="stats" style="justify-content: flex-end; padding:5px;">
-                                    <span style="font-size:10px; color:var(--text-muted);">${new Date(data.createdAt?.toDate()).toLocaleDateString() || 'Recent'}</span>
-                                </div>
                             </div>
                         `;
                     }
@@ -853,18 +979,27 @@
         }
 
         // Form Submissions
-        // 1. Submit Player Recruitment
+        
+        // Admin: Update Customer Support
+        document.getElementById('form-admin-support').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newNum = document.getElementById('admin-support-num').value;
+            try {
+                await setDoc(doc(db, "settings", "general"), { supportNumber: newNum }, { merge: true });
+                alert("Customer Support Number Updated!");
+            } catch(e) { alert("Error: " + e.message); }
+        });
+
+        // Player: Submit Recruitment
         document.getElementById('form-recruitment').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const role = document.getElementById('rec-role').value;
-            const teamName = document.getElementById('rec-team').value;
-            const contact = document.getElementById('rec-contact').value;
-            const reqs = document.getElementById('rec-req').value;
-            const msg = document.getElementById('rec-msg').value;
-            
             try {
                 await addDoc(collection(db, "recruitments"), {
-                    role, teamName, contact, reqs, msg,
+                    role: document.getElementById('rec-role').value,
+                    teamName: document.getElementById('rec-team').value,
+                    contact: document.getElementById('rec-contact').value,
+                    reqs: document.getElementById('rec-req').value,
+                    msg: document.getElementById('rec-msg').value,
                     authorId: currentUser.uid,
                     createdAt: serverTimestamp()
                 });
@@ -874,7 +1009,7 @@
             } catch(e) { alert("Error: " + e.message); }
         });
 
-        // 2. Submit Tournament (Admin)
+        // Admin: Submit Tournament
         document.getElementById('form-admin-tour').addEventListener('submit', async (e) => {
             e.preventDefault();
             try {
@@ -893,7 +1028,7 @@
             } catch(e) { alert("Error: " + e.message); }
         });
 
-        // 3. Submit Update (Admin)
+        // Admin: Submit Update
         document.getElementById('form-admin-update').addEventListener('submit', async (e) => {
             e.preventDefault();
             try {
@@ -901,7 +1036,7 @@
                     type: document.getElementById('upd-type').value,
                     title: document.getElementById('upd-title').value,
                     imgUrl: document.getElementById('upd-img').value,
-                    link: document.getElementById('upd-link').value,
+                    link: document.getElementById('upd-link').value || "",
                     desc: document.getElementById('upd-desc').value,
                     createdAt: serverTimestamp()
                 });
