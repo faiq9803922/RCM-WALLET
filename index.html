@@ -227,7 +227,7 @@
             border-radius: 20px;
             padding: 30px 22px;
             width: 100%;
-            max-width: 3500px;
+            max-width: 500px;
             text-align: center;
             box-shadow: 0 15px 35px rgba(0,0,0,0.6);
             animation: fadeIn 0.5s ease-out;
@@ -305,7 +305,7 @@
             display: none;
             padding: 18px 16px;
             width: 100%;
-            max-width: 3500px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
@@ -338,7 +338,6 @@
             overflow: hidden;
             transition: transform 0.25s ease, box-shadow 0.25s ease;
             width: 100%;
-            max-width: 3500px;
         }
 
         .card:hover {
@@ -350,7 +349,6 @@
             width: calc(100% + 32px);
             margin: -16px -16px 14px -16px;
             height: auto;
-            max-width: 3500px;
             object-fit: contain;
             background-color: rgba(0, 0, 0, 0.5);
             border-bottom: 2px solid var(--gold-main);
@@ -369,7 +367,6 @@
             color: var(--text-muted);
             margin-bottom: 10px;
             line-height: 1.4;
-            max-width: 3500px;
         }
 
         .card .stats {
@@ -424,6 +421,16 @@
             letter-spacing: 1px;
         }
 
+        .badge-count {
+            background: #ff3333;
+            color: white;
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 10px;
+            margin-left: 6px;
+            font-weight: bold;
+        }
+
         .live-badge {
             position: absolute;
             top: 12px;
@@ -473,13 +480,180 @@
         }
 
         .profile-menu button {
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         .admin-btn {
             background: linear-gradient(135deg, #1f1f1f, #0a0a0a);
             border: 1px solid var(--gold-main);
             color: var(--gold-main);
+        }
+
+        /* CHAT STYLES (Public & Private) */
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 210px);
+            max-height: 650px;
+            background: rgba(26, 2, 2, 0.85);
+            border: 1px solid var(--gold-dark);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 14px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chat-msg {
+            max-width: 82%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            position: relative;
+            font-size: 13px;
+            line-height: 1.4;
+            word-break: break-word;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .chat-msg.mine {
+            align-self: flex-end;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-main));
+            color: var(--maroon-dark);
+            border-bottom-right-radius: 2px;
+            font-weight: 600;
+        }
+
+        .chat-msg.other {
+            align-self: flex-start;
+            background: rgba(92, 10, 10, 0.85);
+            color: var(--text-light);
+            border: 1px solid var(--gold-dark);
+            border-bottom-left-radius: 2px;
+        }
+
+        .chat-sender {
+            font-size: 11px;
+            font-weight: 800;
+            margin-bottom: 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            color: var(--gold-light);
+        }
+
+        .chat-msg.mine .chat-sender {
+            color: var(--maroon-dark);
+        }
+
+        .chat-time {
+            font-size: 9px;
+            opacity: 0.75;
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        .chat-del-btn {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 2px 4px;
+            min-height: unset;
+            box-shadow: none;
+            width: auto;
+            display: inline;
+        }
+
+        .chat-msg.mine .chat-del-btn {
+            color: var(--maroon-dark);
+        }
+
+        .chat-input-bar {
+            display: flex;
+            padding: 10px;
+            background: rgba(0,0,0,0.6);
+            border-top: 1px solid var(--gold-dark);
+            gap: 8px;
+        }
+
+        .chat-input-bar input {
+            margin-bottom: 0;
+            border-radius: 20px;
+            padding: 10px 16px;
+        }
+
+        .chat-input-bar button {
+            width: auto;
+            min-height: unset;
+            border-radius: 20px;
+            padding: 0 18px;
+        }
+
+        /* MODALS & OVERLAYS */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            animation: fadeIn 0.25s ease-out;
+        }
+
+        .modal-card {
+            background: var(--maroon-dark);
+            background-image: radial-gradient(circle at top, var(--maroon-main) 0%, var(--maroon-dark) 100%);
+            border: 1px solid var(--gold-main);
+            border-radius: 18px;
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: var(--shadow-gold-glow);
+        }
+
+        .modal-header {
+            background: var(--gradient-gold);
+            padding: 14px 18px;
+            color: var(--maroon-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 800;
+        }
+
+        .modal-header h3 { font-size: 18px; color: var(--maroon-dark); }
+
+        .modal-header .close-btn {
+            background: none;
+            border: none;
+            color: var(--maroon-dark);
+            font-size: 20px;
+            cursor: pointer;
+            width: auto;
+            min-height: unset;
+            padding: 0;
+            box-shadow: none;
+        }
+
+        .modal-body {
+            padding: 18px;
+            overflow-y: auto;
+            flex: 1;
         }
 
         /* Bottom Navigation */
@@ -509,12 +683,12 @@
             font-weight: 800;
             cursor: pointer;
             transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            padding: 6px 12px;
+            padding: 6px 10px;
             border-radius: 12px;
         }
 
         .nav-item i {
-            font-size: 20px;
+            font-size: 19px;
             margin-bottom: 3px;
         }
 
@@ -558,7 +732,7 @@
             background: var(--maroon-dark); color: var(--gold-main); border: 1px solid var(--maroon-dark);
         }
 
-        .admin-content { padding: 20px 16px; width: 100%; max-width: 3500px; margin: 0 auto; }
+        .admin-content { padding: 20px 16px; width: 100%; max-width: 1000px; margin: 0 auto; }
 
         .data-item {
             display: flex; justify-content: space-between; align-items: center;
@@ -585,13 +759,28 @@
             display: block;
         }
 
+        /* Friends Card Item */
+        .friend-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--gold-dark);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .friend-info h4 { color: var(--gold-light); font-size: 15px; }
+        .friend-info p { color: var(--text-muted); font-size: 12px; margin: 0; }
+
         /* Responsive Tweaks */
         @media (max-width: 380px) {
             .auth-card { padding: 22px 16px; }
             .section { padding: 14px 12px; }
             .card { padding: 14px; }
-            .nav-item { padding: 4px 8px; font-size: 9px; }
-            .nav-item i { font-size: 18px; }
+            .nav-item { padding: 4px 6px; font-size: 8.5px; }
+            .nav-item i { font-size: 17px; }
         }
     </style>
 </head>
@@ -615,7 +804,7 @@
             <form id="auth-form">
                 <input type="text" id="auth-id" placeholder="Login ID / Username" class="hidden">
                 <input type="text" id="auth-name" placeholder="Full Name" class="hidden">
-                <input type="text" id="auth-uid" placeholder="In-Game UID" class="hidden">
+                <input type="text" id="auth-uid" placeholder="In-Game UID (e.g. 3192995554)" class="hidden">
                 <input type="email" id="auth-email" placeholder="Email Address" required>
                 <input type="password" id="auth-password" placeholder="Password" required>
                 <input type="password" id="auth-confirm" placeholder="Confirm Password" class="hidden">
@@ -687,13 +876,27 @@
             </div>
         </div>
 
-        <!-- 3. UPDATES SECTION -->
+        <!-- 3. PUBLIC CHAT SECTION -->
+        <div id="chat-page" class="section">
+            <div class="section-title">Public Global Chat</div>
+            <div class="chat-box">
+                <div class="chat-messages" id="public-chat-messages">
+                    <div class="empty-state"><i class="fa-solid fa-comments"></i><p>Loading messages...</p></div>
+                </div>
+                <form id="public-chat-form" class="chat-input-bar">
+                    <input type="text" id="public-chat-input" placeholder="Type a message..." required autocomplete="off">
+                    <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 4. UPDATES SECTION -->
         <div id="updates-page" class="section">
             <div class="section-title">Daily Updates & Live</div>
             <div id="updates-list"></div>
         </div>
 
-        <!-- 4. PROFILE SECTION -->
+        <!-- 5. PROFILE SECTION -->
         <div id="profile-page" class="section">
             <div class="profile-header">
                 <img src="rcm.jfif" alt="Avatar" onerror="this.src='https://via.placeholder.com/105/D4AF37/1a0202?text=U'">
@@ -701,7 +904,17 @@
                 <p>Login ID: <span id="profile-login-id" style="color:var(--text-light)">Loading...</span></p>
                 <div class="uid-box">UID: <span id="profile-uid">Loading...</span></div>
             </div>
+
             <div class="profile-menu">
+                <button class="outline" id="btn-find-friend-modal" onclick="openModal('find-friend-modal')">
+                    <i class="fa-solid fa-user-plus"></i> FIND FRIEND (BY GAME UID)
+                </button>
+                <button class="outline" id="btn-friend-reqs-modal" onclick="openModal('friend-reqs-modal')">
+                    <i class="fa-solid fa-user-clock"></i> FRIEND REQUESTS <span id="req-count-badge" class="badge-count hidden">0</span>
+                </button>
+                <button class="outline" id="btn-my-friends-modal" onclick="openModal('my-friends-modal')">
+                    <i class="fa-solid fa-users"></i> MY FRIENDS LIST
+                </button>
                 <button class="outline" id="btn-support">
                     <i class="fa-brands fa-whatsapp"></i> CUSTOMER SUPPORT
                 </button>
@@ -724,6 +937,10 @@
                 <i class="fa-solid fa-users"></i>
                 <span>PLAYERS</span>
             </div>
+            <div class="nav-item" onclick="switchTab('chat', this)">
+                <i class="fa-solid fa-comments"></i>
+                <span>CHAT</span>
+            </div>
             <div class="nav-item" onclick="switchTab('updates', this)">
                 <i class="fa-solid fa-bolt"></i>
                 <span>UPDATES</span>
@@ -733,6 +950,87 @@
                 <span>PROFILE</span>
             </div>
         </nav>
+    </div>
+
+    <!-- MODAL: FIND FRIEND -->
+    <div id="find-friend-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="brand-font"><i class="fa-solid fa-magnifying-glass"></i> FIND FRIEND BY UID</h3>
+                <button class="close-btn" onclick="closeModal('find-friend-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-search-uid" style="display:flex; gap:8px;">
+                    <input type="text" id="search-game-uid" placeholder="Enter Game UID (e.g. 3192995554)" required style="margin-bottom:0;">
+                    <button type="submit" style="width:auto; min-height:unset; padding:0 16px;"><i class="fa-solid fa-search"></i></button>
+                </form>
+                <div id="search-uid-result" style="margin-top: 15px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: FRIEND REQUESTS -->
+    <div id="friend-reqs-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="brand-font"><i class="fa-solid fa-user-clock"></i> FRIEND REQUESTS</h3>
+                <button class="close-btn" onclick="closeModal('friend-reqs-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="friend-requests-list">
+                    <div class="empty-state"><p>No pending friend requests.</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: MY FRIENDS -->
+    <div id="my-friends-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="brand-font"><i class="fa-solid fa-users"></i> MY FRIENDS</h3>
+                <button class="close-btn" onclick="closeModal('my-friends-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="my-friends-list">
+                    <div class="empty-state"><p>No friends added yet.</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: FRIEND OPTIONS (BLOCK / CHAT / UNFRIEND) -->
+    <div id="friend-options-modal" class="modal-overlay hidden">
+        <div class="modal-card" style="max-width: 360px;">
+            <div class="modal-header">
+                <h3 class="brand-font" id="opt-friend-name">FRIEND OPTIONS</h3>
+                <button class="close-btn" onclick="closeModal('friend-options-modal')">&times;</button>
+            </div>
+            <div class="modal-body" style="display:flex; flex-direction:column; gap:12px;">
+                <button id="btn-opt-chat"><i class="fa-solid fa-message"></i> CHAT</button>
+                <button id="btn-opt-unfriend" class="outline"><i class="fa-solid fa-user-minus"></i> UNFRIEND</button>
+                <button id="btn-opt-block" class="danger"><i class="fa-solid fa-ban"></i> BLOCK USER</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: PRIVATE DIRECT CHAT -->
+    <div id="private-chat-modal" class="modal-overlay hidden">
+        <div class="modal-card" style="max-width: 500px; height: 90vh;">
+            <div class="modal-header">
+                <h3 class="brand-font" id="priv-chat-target-name"><i class="fa-solid fa-comments"></i> CHAT</h3>
+                <button class="close-btn" onclick="closeModal('private-chat-modal')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding:0; display:flex; flex-direction:column; height:100%;">
+                <div class="chat-box" style="border:none; border-radius:0; height:100%;">
+                    <div class="chat-messages" id="private-chat-messages"></div>
+                    <form id="private-chat-form" class="chat-input-bar">
+                        <input type="text" id="private-chat-input" placeholder="Type a message..." required autocomplete="off">
+                        <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- SEPARATE ADMIN PAGE -->
@@ -806,7 +1104,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, where, serverTimestamp, doc, setDoc, getDoc, getDocs, deleteDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAMJmtiDAkzRNMuH4mk30_QwA-jTKYU9sg",
@@ -824,8 +1122,13 @@
 
         let isLoginMode = true;
         let currentUser = null;
+        let currentUserProfile = null;
         let isAdmin = false;
         let currentSupportNumber = "923000000000";
+
+        let selectedFriendForOptions = null;
+        let activePrivateChatFriend = null;
+        let unsubPrivChat = null;
 
         const loadingScreen = document.getElementById('loading-screen');
         const authScreen = document.getElementById('auth-screen');
@@ -857,6 +1160,18 @@
             if(cleaned.startsWith('0')) cleaned = '92' + cleaned.substring(1);
             return `https://wa.me/${cleaned}`;
         }
+
+        window.openModal = function(id) {
+            document.getElementById(id).classList.remove('hidden');
+        };
+
+        window.closeModal = function(id) {
+            document.getElementById(id).classList.add('hidden');
+            if(id === 'private-chat-modal' && unsubPrivChat) {
+                unsubPrivChat();
+                unsubPrivChat = null;
+            }
+        };
 
         toggleAuthBtn.addEventListener('click', () => {
             isLoginMode = !isLoginMode;
@@ -896,6 +1211,7 @@
                         fullName: authName.value.trim(),
                         gameUid: authUid.value.trim(),
                         email: email,
+                        blockedUsers: [],
                         createdAt: serverTimestamp()
                     });
                 }
@@ -919,12 +1235,13 @@
                 try {
                     const userDoc = await getDoc(doc(db, "users", user.uid));
                     if(userDoc.exists()) {
-                        const data = userDoc.data();
-                        document.getElementById('profile-name').innerText = data.fullName || "PLAYER";
-                        document.getElementById('profile-login-id').innerText = data.loginId || "N/A";
-                        document.getElementById('profile-uid').innerText = data.gameUid || "N/A";
+                        currentUserProfile = userDoc.data();
+                        document.getElementById('profile-name').innerText = currentUserProfile.fullName || "PLAYER";
+                        document.getElementById('profile-login-id').innerText = currentUserProfile.loginId || "N/A";
+                        document.getElementById('profile-uid').innerText = currentUserProfile.gameUid || "N/A";
                     } else {
-                        document.getElementById('profile-name').innerText = user.email.split('@')[0];
+                        currentUserProfile = { fullName: user.email.split('@')[0], gameUid: "N/A" };
+                        document.getElementById('profile-name').innerText = currentUserProfile.fullName;
                         document.getElementById('profile-uid').innerText = user.uid.substring(0,8).toUpperCase();
                     }
                 } catch(e) {
@@ -974,7 +1291,7 @@
             if(pass === "RCM9988") {
                 isAdmin = true;
                 document.getElementById('admin-page').style.display = 'block';
-                if(window.loadRecruitments) window.loadRecruitments(); // refresh recruitment list to show admin delete buttons
+                if(window.loadRecruitments) window.loadRecruitments();
             } else if (pass !== null) {
                 alert("Incorrect Password! Access Denied.");
             }
@@ -1012,9 +1329,10 @@
         }
 
         // FIREBASE LISTENERS
-        let unsubTours, unsubRecs, unsubUpds, unsubSettings;
+        let unsubTours, unsubRecs, unsubUpds, unsubSettings, unsubPublicChat, unsubFriendReqs, unsubFriends;
 
         function startDataListeners() {
+            // General Settings Listener
             unsubSettings = onSnapshot(doc(db, "settings", "general"), (docSnap) => {
                 if(docSnap.exists() && docSnap.data().supportNumber) {
                     currentSupportNumber = docSnap.data().supportNumber;
@@ -1026,6 +1344,7 @@
                 window.location.href = getWaLink(currentSupportNumber);
             };
 
+            // Tournaments Listener
             const qTours = query(collection(db, "tournaments"), orderBy("createdAt", "desc"));
             unsubTours = onSnapshot(qTours, (snapshot) => {
                 const list = document.getElementById('tours-list');
@@ -1039,11 +1358,10 @@
                     return;
                 }
                 
-                snapshot.forEach(doc => {
-                    const data = doc.data();
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
                     const registerLink = getWaLink(data.contact);
                     
-                    // Main App View
                     list.innerHTML += `
                         <div class="card fade-in">
                             ${data.imgUrl ? `<img src="${data.imgUrl}" class="banner" alt="Banner">` : ''}
@@ -1059,14 +1377,13 @@
                         </div>
                     `;
 
-                    // Admin Delete View
                     adminToursList.innerHTML += `
                         <div class="data-item">
                             <div class="data-item-info">
                                 <h4>${data.name}</h4>
                                 <span>Fee: ${data.fee} | Slots: ${data.slots}</span>
                             </div>
-                            <button class="danger" onclick="deleteDocument('tournaments', '${doc.id}')" style="width: auto; min-height: unset; padding: 8px 14px; font-size: 12px;">
+                            <button class="danger" onclick="deleteDocument('tournaments', '${docSnap.id}')" style="width: auto; min-height: unset; padding: 8px 14px; font-size: 12px;">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
@@ -1074,6 +1391,7 @@
                 });
             });
 
+            // Recruitments Listener
             window.loadRecruitments = function() {
                 const filter = document.getElementById('filter-role').value;
                 const qRecs = query(collection(db, "recruitments"), orderBy("createdAt", "desc"));
@@ -1087,7 +1405,6 @@
                         if(filter !== "ALL" && data.role !== filter) return;
                         count++;
                         
-                        // Check if current user is author or admin
                         const canDelete = currentUser && (data.authorId === currentUser.uid || isAdmin);
 
                         list.innerHTML += `
@@ -1117,6 +1434,7 @@
             };
             loadRecruitments(); 
 
+            // Updates Listener
             const qUpds = query(collection(db, "updates"), orderBy("createdAt", "desc"));
             unsubUpds = onSnapshot(qUpds, (snapshot) => {
                 const list = document.getElementById('updates-list');
@@ -1133,7 +1451,6 @@
                 snapshot.forEach(docSnap => {
                     const data = docSnap.data();
                     
-                    // Main App View
                     if(data.type === 'youtube') {
                         list.innerHTML += `
                             <div class="card fade-in">
@@ -1158,7 +1475,6 @@
                         `;
                     }
 
-                    // Admin Delete View
                     adminUpdsList.innerHTML += `
                         <div class="data-item">
                             <div class="data-item-info">
@@ -1172,9 +1488,350 @@
                     `;
                 });
             });
+
+            // PUBLIC GLOBAL CHAT LISTENER
+            const qPublicChat = query(collection(db, "public_chat"), orderBy("createdAt", "asc"));
+            unsubPublicChat = onSnapshot(qPublicChat, (snapshot) => {
+                const chatContainer = document.getElementById('public-chat-messages');
+                chatContainer.innerHTML = "";
+
+                if(snapshot.empty) {
+                    chatContainer.innerHTML = `<div class="empty-state"><i class="fa-solid fa-comments"></i><p>No messages yet. Say hi!</p></div>`;
+                    return;
+                }
+
+                snapshot.forEach(docSnap => {
+                    const msg = docSnap.data();
+                    const isMine = currentUser && msg.senderId === currentUser.uid;
+                    const canDelete = isMine || isAdmin;
+
+                    const dateObj = msg.createdAt ? msg.createdAt.toDate() : new Date();
+                    const timeStr = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                    chatContainer.innerHTML += `
+                        <div class="chat-msg ${isMine ? 'mine' : 'other'}">
+                            <div class="chat-sender">
+                                <span>${msg.senderName || 'Player'}</span>
+                                ${canDelete ? `<button class="chat-del-btn" onclick="deleteDocument('public_chat', '${docSnap.id}')" title="Delete Message"><i class="fa-solid fa-trash"></i></button>` : ''}
+                            </div>
+                            <div class="chat-text">${msg.text}</div>
+                            <div class="chat-time">${timeStr}</div>
+                        </div>
+                    `;
+                });
+
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            });
+
+            // FRIEND REQUESTS LISTENER (Incoming)
+            const qReqs = query(collection(db, "friend_requests"), where("toUid", "==", currentUser.uid), where("status", "==", "pending"));
+            unsubFriendReqs = onSnapshot(qReqs, (snapshot) => {
+                const reqList = document.getElementById('friend-requests-list');
+                const badge = document.getElementById('req-count-badge');
+                reqList.innerHTML = "";
+
+                if(snapshot.empty) {
+                    badge.classList.add('hidden');
+                    reqList.innerHTML = `<div class="empty-state"><p>No pending friend requests.</p></div>`;
+                    return;
+                }
+
+                badge.innerText = snapshot.size;
+                badge.classList.remove('hidden');
+
+                snapshot.forEach(docSnap => {
+                    const req = docSnap.data();
+                    reqList.innerHTML += `
+                        <div class="friend-item">
+                            <div class="friend-info">
+                                <h4>${req.fromName}</h4>
+                                <p>Game UID: ${req.fromGameUid || 'N/A'}</p>
+                            </div>
+                            <div style="display:flex; gap:6px;">
+                                <button style="width:auto; min-height:unset; padding:6px 12px; font-size:12px;" onclick="acceptFriendReq('${docSnap.id}', '${req.fromUid}', '${req.fromName}', '${req.fromGameUid}')"><i class="fa-solid fa-check"></i></button>
+                                <button class="danger" style="width:auto; min-height:unset; padding:6px 12px; font-size:12px;" onclick="rejectFriendReq('${docSnap.id}')"><i class="fa-solid fa-xmark"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+
+            // FRIENDS LISTENER
+            const qFriends = query(collection(db, "friends"), where("uids", "array-contains", currentUser.uid));
+            unsubFriends = onSnapshot(qFriends, (snapshot) => {
+                const friendsContainer = document.getElementById('my-friends-list');
+                friendsContainer.innerHTML = "";
+
+                if(snapshot.empty) {
+                    friendsContainer.innerHTML = `<div class="empty-state"><p>No friends added yet.</p></div>`;
+                    return;
+                }
+
+                snapshot.forEach(docSnap => {
+                    const fData = docSnap.data();
+                    // Get friend details (the user who isn't current user)
+                    const isUser1Me = fData.user1Id === currentUser.uid;
+                    const friendUid = isUser1Me ? fData.user2Id : fData.user1Id;
+                    const friendName = isUser1Me ? fData.user2Name : fData.user1Name;
+                    const friendGameUid = isUser1Me ? fData.user2GameUid : fData.user1GameUid;
+
+                    friendsContainer.innerHTML += `
+                        <div class="friend-item" style="cursor:pointer;" onclick="openFriendOptions('${docSnap.id}', '${friendUid}', '${friendName}', '${friendGameUid}')">
+                            <div class="friend-info">
+                                <h4>${friendName}</h4>
+                                <p>UID: ${friendGameUid}</p>
+                            </div>
+                            <button class="outline" style="width:auto; min-height:unset; padding:6px 12px; font-size:12px;">
+                                OPTIONS <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+            });
         }
 
-        // FORM SUBMISSIONS
+        // PUBLIC CHAT SEND FORM
+        document.getElementById('public-chat-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const input = document.getElementById('public-chat-input');
+            const text = input.value.trim();
+            if(!text || !currentUser) return;
+
+            try {
+                input.value = "";
+                await addDoc(collection(db, "public_chat"), {
+                    senderId: currentUser.uid,
+                    senderName: currentUserProfile ? currentUserProfile.fullName : "Player",
+                    text: text,
+                    createdAt: serverTimestamp()
+                });
+            } catch(err) {
+                alert("Error sending message: " + err.message);
+            }
+        });
+
+        // FIND FRIEND BY GAME UID
+        document.getElementById('form-search-uid').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const searchUid = document.getElementById('search-game-uid').value.trim();
+            const resultBox = document.getElementById('search-uid-result');
+            resultBox.innerHTML = "<p style='text-align:center; color:var(--text-muted);'>Searching...</p>";
+
+            try {
+                const qUser = query(collection(db, "users"), where("gameUid", "==", searchUid));
+                const snap = await getDocs(qUser);
+
+                if(snap.empty) {
+                    resultBox.innerHTML = "<p style='text-align:center; color:#ff6666;'>No user found with this Game UID.</p>";
+                    return;
+                }
+
+                let foundUserDoc = snap.docs[0];
+                let foundUserData = foundUserDoc.data();
+                let foundUserId = foundUserDoc.id;
+
+                if(foundUserId === currentUser.uid) {
+                    resultBox.innerHTML = "<p style='text-align:center; color:var(--gold-main);'>This is your own Game UID!</p>";
+                    return;
+                }
+
+                resultBox.innerHTML = `
+                    <div class="friend-item">
+                        <div class="friend-info">
+                            <h4>${foundUserData.fullName || 'Player'}</h4>
+                            <p>UID: ${foundUserData.gameUid}</p>
+                        </div>
+                        <button style="width:auto; min-height:unset; padding:8px 14px; font-size:12px;" onclick="sendFriendReq('${foundUserId}', '${foundUserData.fullName}', '${foundUserData.gameUid}')">
+                            <i class="fa-solid fa-paper-plane"></i> ADD
+                        </button>
+                    </div>
+                `;
+            } catch(err) {
+                resultBox.innerHTML = `<p style='text-align:center; color:#ff6666;'>Error: ${err.message}</p>`;
+            }
+        });
+
+        // SEND FRIEND REQUEST
+        window.sendFriendReq = async function(targetUid, targetName, targetGameUid) {
+            try {
+                // Check if already requested or friends
+                const qCheck = query(collection(db, "friend_requests"), where("fromUid", "==", currentUser.uid), where("toUid", "==", targetUid), where("status", "==", "pending"));
+                const checkSnap = await getDocs(qCheck);
+
+                if(!checkSnap.empty) {
+                    alert("Friend request already sent!");
+                    return;
+                }
+
+                await addDoc(collection(db, "friend_requests"), {
+                    fromUid: currentUser.uid,
+                    fromName: currentUserProfile ? currentUserProfile.fullName : 'Player',
+                    fromGameUid: currentUserProfile ? currentUserProfile.gameUid : 'N/A',
+                    toUid: targetUid,
+                    toName: targetName,
+                    toGameUid: targetGameUid,
+                    status: "pending",
+                    createdAt: serverTimestamp()
+                });
+
+                alert("Friend request sent to " + targetName + "!");
+                closeModal('find-friend-modal');
+            } catch(err) {
+                alert("Error sending request: " + err.message);
+            }
+        };
+
+        // ACCEPT FRIEND REQUEST
+        window.acceptFriendReq = async function(reqDocId, fromUid, fromName, fromGameUid) {
+            try {
+                // Delete request doc
+                await deleteDoc(doc(db, "friend_requests", reqDocId));
+
+                // Create friend entry doc
+                await addDoc(collection(db, "friends"), {
+                    uids: [currentUser.uid, fromUid],
+                    user1Id: currentUser.uid,
+                    user1Name: currentUserProfile ? currentUserProfile.fullName : 'Player',
+                    user1GameUid: currentUserProfile ? currentUserProfile.gameUid : 'N/A',
+                    user2Id: fromUid,
+                    user2Name: fromName,
+                    user2GameUid: fromGameUid,
+                    createdAt: serverTimestamp()
+                });
+
+                alert("Friend request accepted!");
+            } catch(err) {
+                alert("Error accepting request: " + err.message);
+            }
+        };
+
+        // REJECT FRIEND REQUEST
+        window.rejectFriendReq = async function(reqDocId) {
+            try {
+                await deleteDoc(doc(db, "friend_requests", reqDocId));
+                alert("Request rejected.");
+            } catch(err) {
+                alert("Error: " + err.message);
+            }
+        };
+
+        // OPEN FRIEND OPTIONS DIALOG (CHAT / UNFRIEND / BLOCK)
+        window.openFriendOptions = function(friendshipDocId, friendUid, friendName, friendGameUid) {
+            selectedFriendForOptions = { friendshipDocId, friendUid, friendName, friendGameUid };
+            document.getElementById('opt-friend-name').innerText = friendName;
+            openModal('friend-options-modal');
+        };
+
+        // FRIEND OPTION 1: CHAT
+        document.getElementById('btn-opt-chat').addEventListener('click', () => {
+            if(!selectedFriendForOptions) return;
+            const target = { ...selectedFriendForOptions };
+            closeModal('friend-options-modal');
+            closeModal('my-friends-modal');
+            openPrivateChat(target.friendUid, target.friendName);
+        });
+
+        // FRIEND OPTION 2: UNFRIEND
+        document.getElementById('btn-opt-unfriend').addEventListener('click', async () => {
+            if(!selectedFriendForOptions) return;
+            if(confirm("Are you sure you want to remove " + selectedFriendForOptions.friendName + " from your friends?")) {
+                try {
+                    await deleteDoc(doc(db, "friends", selectedFriendForOptions.friendshipDocId));
+                    alert("Unfriended successfully.");
+                    closeModal('friend-options-modal');
+                } catch(err) {
+                    alert("Error unfriending: " + err.message);
+                }
+            }
+        });
+
+        // FRIEND OPTION 3: BLOCK
+        document.getElementById('btn-opt-block').addEventListener('click', async () => {
+            if(!selectedFriendForOptions) return;
+            if(confirm("Are you sure you want to block " + selectedFriendForOptions.friendName + "?")) {
+                try {
+                    await deleteDoc(doc(db, "friends", selectedFriendForOptions.friendshipDocId));
+                    await updateDoc(doc(db, "users", currentUser.uid), {
+                        blockedUsers: arrayUnion(selectedFriendForOptions.friendUid)
+                    });
+                    alert(selectedFriendForOptions.friendName + " blocked.");
+                    closeModal('friend-options-modal');
+                } catch(err) {
+                    alert("Error blocking user: " + err.message);
+                }
+            }
+        });
+
+        // OPEN 1-ON-1 PRIVATE CHAT
+        function getPrivateChatId(uid1, uid2) {
+            return [uid1, uid2].sort().join("_");
+        }
+
+        window.openPrivateChat = function(friendUid, friendName) {
+            activePrivateChatFriend = { uid: friendUid, name: friendName };
+            document.getElementById('priv-chat-target-name').innerHTML = `<i class="fa-solid fa-comments"></i> CHAT WITH ${friendName.toUpperCase()}`;
+            
+            const chatId = getPrivateChatId(currentUser.uid, friendUid);
+            const messagesContainer = document.getElementById('private-chat-messages');
+            messagesContainer.innerHTML = "<p style='text-align:center; padding:20px; color:var(--text-muted);'>Loading conversation...</p>";
+
+            if(unsubPrivChat) unsubPrivChat();
+
+            const qPriv = query(collection(db, "private_chats", chatId, "messages"), orderBy("createdAt", "asc"));
+            unsubPrivChat = onSnapshot(qPriv, (snapshot) => {
+                messagesContainer.innerHTML = "";
+                if(snapshot.empty) {
+                    messagesContainer.innerHTML = `<div class="empty-state"><i class="fa-solid fa-message"></i><p>No private messages yet. Say hi!</p></div>`;
+                    return;
+                }
+
+                snapshot.forEach(docSnap => {
+                    const msg = docSnap.data();
+                    const isMine = msg.senderId === currentUser.uid;
+                    const canDelete = isMine || isAdmin;
+
+                    const dateObj = msg.createdAt ? msg.createdAt.toDate() : new Date();
+                    const timeStr = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                    messagesContainer.innerHTML += `
+                        <div class="chat-msg ${isMine ? 'mine' : 'other'}">
+                            <div class="chat-sender">
+                                <span>${isMine ? 'You' : friendName}</span>
+                                ${canDelete ? `<button class="chat-del-btn" onclick="deleteDocument('private_chats/${chatId}/messages', '${docSnap.id}')" title="Delete Message"><i class="fa-solid fa-trash"></i></button>` : ''}
+                            </div>
+                            <div class="chat-text">${msg.text}</div>
+                            <div class="chat-time">${timeStr}</div>
+                        </div>
+                    `;
+                });
+
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            });
+
+            openModal('private-chat-modal');
+        };
+
+        // PRIVATE CHAT SEND FORM
+        document.getElementById('private-chat-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const input = document.getElementById('private-chat-input');
+            const text = input.value.trim();
+            if(!text || !currentUser || !activePrivateChatFriend) return;
+
+            const chatId = getPrivateChatId(currentUser.uid, activePrivateChatFriend.uid);
+            try {
+                input.value = "";
+                await addDoc(collection(db, "private_chats", chatId, "messages"), {
+                    senderId: currentUser.uid,
+                    text: text,
+                    createdAt: serverTimestamp()
+                });
+            } catch(err) {
+                alert("Error sending message: " + err.message);
+            }
+        });
+
+        // FORM SUBMISSIONS FOR ADMIN & OTHERS
         document.getElementById('form-admin-support').addEventListener('submit', async (e) => {
             e.preventDefault();
             try {
