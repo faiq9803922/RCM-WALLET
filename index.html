@@ -37,8 +37,9 @@
             background-image: radial-gradient(circle at center, var(--maroon-main) 0%, var(--maroon-dark) 100%);
             color: var(--text-light);
             min-height: 100vh;
+            min-height: 100dvh; /* Adapts better to mobile browsers */
             overflow-x: hidden;
-            overscroll-behavior-y: none;
+            overflow-y: auto; /* Fixed: explicitly enabled vertical scrolling */
             -webkit-overflow-scrolling: touch;
         }
 
@@ -268,7 +269,7 @@
         /* Main App Layout */
         #main-app {
             display: none;
-            padding-bottom: calc(85px + env(safe-area-inset-bottom));
+            padding-bottom: calc(75px + env(safe-area-inset-bottom)); /* Fixed: Reduced padding */
         }
 
         /* Header */
@@ -493,8 +494,9 @@
         .chat-box {
             display: flex;
             flex-direction: column;
-            height: calc(100vh - 210px);
-            max-height: 650px;
+            height: calc(100vh - 260px); /* Fixed: Decreased height */
+            height: calc(100dvh - 260px); /* Adapts to modern mobile viewports */
+            max-height: 550px; /* Fixed: Reduced max-height */
             background: rgba(26, 2, 2, 0.85);
             border: 1px solid var(--gold-dark);
             border-radius: 14px;
@@ -619,7 +621,7 @@
             border-radius: 18px;
             width: 100%;
             max-width: 480px;
-            max-height: 90vh;
+            max-height: 85vh; /* Fixed: Reduced height */
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -847,7 +849,7 @@
                     <option value="ALL">All Roles</option>
                     <option value="ALL ROUNDER">All Rounder</option>
                     <option value="SNIPER">Sniper</option>
-                    <option value="NADER">Nader</option>
+                    <option value="NADER">NADER</option>
                     <option value="SUPPORTER">Supporter</option>
                     <option value="RUSHER">Rusher</option>
                 </select>
@@ -1016,13 +1018,13 @@
 
     <!-- MODAL: PRIVATE DIRECT CHAT -->
     <div id="private-chat-modal" class="modal-overlay hidden">
-        <div class="modal-card" style="max-width: 500px; height: 90vh;">
+        <div class="modal-card" style="max-width: 500px; height: 85vh;">
             <div class="modal-header">
                 <h3 class="brand-font" id="priv-chat-target-name"><i class="fa-solid fa-comments"></i> CHAT</h3>
                 <button class="close-btn" onclick="closeModal('private-chat-modal')">&times;</button>
             </div>
             <div class="modal-body" style="padding:0; display:flex; flex-direction:column; height:100%;">
-                <div class="chat-box" style="border:none; border-radius:0; height:100%;">
+                <div class="chat-box" style="border:none; border-radius:0; height:100%; max-height:none;">
                     <div class="chat-messages" id="private-chat-messages"></div>
                     <form id="private-chat-form" class="chat-input-bar">
                         <input type="text" id="private-chat-input" placeholder="Type a message..." required autocomplete="off">
